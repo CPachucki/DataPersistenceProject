@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -73,8 +74,11 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GameManager.Instance.LoadHighScore();
+                GameManager.Instance.LoadGameData();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            } else if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                SceneManager.LoadScene(0);
             }
         }
     }
@@ -94,7 +98,7 @@ public class MainManager : MonoBehaviour
         // Call SaveHighScore method from GameManager singleton
         if (m_Points > highScore)
         {
-            GameManager.Instance.SaveHighScore(m_Points);
+            GameManager.Instance.UpdateHighScore(m_Points);
         }
     }
 }

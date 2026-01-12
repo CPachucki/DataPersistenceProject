@@ -9,6 +9,18 @@ public class GameManager : MonoBehaviour
     public String Username;
     public int HighScore = 0;
     public String HighScoreUsername;
+    public float BallSpeed;
+    public int Lives;
+
+    [System.Serializable]
+    class GameData
+    {
+        public String username;
+        public int highScore;
+        public float ballSpeed;
+        public int lives;
+    }
+    private GameData data = new GameData();
 
     private void Awake()
     {
@@ -21,7 +33,7 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        LoadHighScore();
+        LoadGameData();
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -34,39 +46,52 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         
-    }
+    }    
 
-    [System.Serializable]
-    class SaveData
+    private void SaveGameData(GameData data)
     {
-        public String username;
-        public int highScore;
-    }
-
-    public void SaveHighScore(int score)
-    {
-        // High score = current score and high score name = current name
-        SaveData data = new SaveData();
-        data.username = Username;
-        data.highScore = score;
         // Save new high score data to JSON file
         string json = JsonUtility.ToJson(data);
-        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
-        
-        UnityEngine.Debug.Log(data.username + ", " + data.highScore);
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);        
     }
 
-    public void LoadHighScore()
+    public void UpdateHighScore(int score)
+    {
+        // High score = current score and high score name = current name
+        //GameData data = LoadGameData();
+        data.username = Username;
+        data.highScore = score;
+        SaveGameData(data);
+        //UnityEngine.Debug.Log(data.username + ", " + data.highScore);
+    }
+
+    public void UpdateLives(int lives)
+    {
+        //GameData data = LoadGameData();
+        data.lives = lives;
+        SaveGameData(data);
+    }
+
+    public void UpdateSpeed(float speed)
+    {
+        //GameData data = LoadGameData();
+        data.ballSpeed = speed;
+        SaveGameData(data);
+    }
+
+    public void LoadGameData()
     {
         // Load high score data from JSON file
         string path = Application.persistentDataPath + "/savefile.json";
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);
-            SaveData data = JsonUtility.FromJson<SaveData>(json);
+            GameData data = JsonUtility.FromJson<GameData>(json);
 
             HighScoreUsername = data.username;
             HighScore = data.highScore;
+            Lives = data.lives;
+            BallSpeed = data.ballSpeed;
         }
     }
 }

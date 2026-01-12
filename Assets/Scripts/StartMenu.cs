@@ -37,4 +37,9 @@ public class StartMenu : MonoBehaviour
             UnityEngine.Debug.Log("Enter a username");
         }          
     }
+
+    public void AccessSettings()
+    {
+        SceneManager.LoadScene(2);
+    }
 }
