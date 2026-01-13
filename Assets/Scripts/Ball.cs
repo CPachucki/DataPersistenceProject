@@ -6,17 +6,15 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody m_Rigidbody;
-    private float speedFactor = 1.0f;
 
     void Start()
     {
         m_Rigidbody = GetComponent<Rigidbody>();
-        speedFactor = GameManager.Instance.BallSpeed;
     }
     
     private void OnCollisionExit(Collision other)
     {
-        var velocity = m_Rigidbody.linearVelocity;// * speedFactor;
+        var velocity = m_Rigidbody.linearVelocity;
         
         //after a collision we accelerate a bit
         velocity += velocity.normalized * 0.01f;

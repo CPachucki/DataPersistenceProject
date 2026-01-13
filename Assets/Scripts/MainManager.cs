@@ -11,12 +11,15 @@ public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
     public int LineCount = 6;
-    public Rigidbody Ball;
+    public Rigidbody Ball;    
 
     public Text ScoreText;
     public Text HighScoreText; 
     public GameObject GameOverText;
     
+    private float ballSpeed = 2.0f;
+    private float speedFactor = 1.0f;
+
     private bool m_Started = false;
     private int m_Points;
     private int highScore;
@@ -33,6 +36,8 @@ public class MainManager : MonoBehaviour
         highScoreUsername = GameManager.Instance.HighScoreUsername;
         highScore = GameManager.Instance.HighScore;
         HighScoreText.text = $"High Score: {highScore}, {highScoreUsername}";
+
+        speedFactor = GameManager.Instance.BallSpeed;
     }
 
     
@@ -67,7 +72,7 @@ public class MainManager : MonoBehaviour
                 forceDir.Normalize();
 
                 Ball.transform.SetParent(null);
-                Ball.AddForce(forceDir * 2.0f, ForceMode.VelocityChange);
+                Ball.AddForce(forceDir * ballSpeed * speedFactor, ForceMode.VelocityChange);
             }
         }
         else if (m_GameOver)
@@ -87,7 +92,6 @@ public class MainManager : MonoBehaviour
     {
         m_Points += point;
         ScoreText.text = $"{username}'s Score : {m_Points}";
-        //ScoreText.text = username + "'s Score: " + m_Points;
     }
 
     public void GameOver()

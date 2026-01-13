@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.IO;
+using System.Diagnostics;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,8 +10,8 @@ public class GameManager : MonoBehaviour
     public String Username;
     public int HighScore = 0;
     public String HighScoreUsername;
-    public float BallSpeed;
-    public int Lives;
+    public float BallSpeed = 1;
+    public int Lives = 1;
 
     [System.Serializable]
     class GameData
@@ -34,6 +35,9 @@ public class GameManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         LoadGameData();
+        UnityEngine.Debug.Log("High Score: " + HighScore + ", " + HighScoreUsername);
+        UnityEngine.Debug.Log("Lives: " + Lives);
+        UnityEngine.Debug.Log("Speed: " + BallSpeed);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -67,14 +71,14 @@ public class GameManager : MonoBehaviour
 
     public void UpdateLives(int lives)
     {
-        //GameData data = LoadGameData();
+        Lives = lives;
         data.lives = lives;
         SaveGameData(data);
     }
 
     public void UpdateSpeed(float speed)
     {
-        //GameData data = LoadGameData();
+        BallSpeed = speed;
         data.ballSpeed = speed;
         SaveGameData(data);
     }
@@ -93,5 +97,6 @@ public class GameManager : MonoBehaviour
             Lives = data.lives;
             BallSpeed = data.ballSpeed;
         }
+        UnityEngine.Debug.Log("Data loaded.");
     }
 }

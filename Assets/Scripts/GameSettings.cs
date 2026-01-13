@@ -13,7 +13,10 @@ public class GameSettings : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        lives = GameManager.Instance.Lives;
+        livesSlider.value = lives;
+        speedFactor = GameManager.Instance.BallSpeed;
+        speedSlider.value = speedFactor;
     }
 
     // Update is called once per frame
@@ -25,11 +28,15 @@ public class GameSettings : MonoBehaviour
     public void SetLives()
     {
         lives = (int)livesSlider.value;
+        //GameManager.Instance.Lives = lives;
+        GameManager.Instance.UpdateLives(lives);
     }
 
     public void SetSpeed()
     {
         speedFactor = (float)speedSlider.value;
+        //GameManager.Instance.BallSpeed = speedFactor;
+        GameManager.Instance.UpdateSpeed(speedFactor);
     }
 
     public void ReturnToTitle()
