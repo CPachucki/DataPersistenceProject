@@ -9,8 +9,9 @@ public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
     public int LineCount = 6;
-    //public GameObject Ball; 
-    public Rigidbody Ball;
+    public GameObject ballPrefab; 
+    private GameObject ball;
+    private Rigidbody rbBall;
     public Transform paddle;   
     private Transform paddleParent;  
 
@@ -32,8 +33,6 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
-        //rbBall = Ball.GetComponent<Rigidbody>();
-
         username = GameManager.Instance.Username;
         UpdateScoreText();
 
@@ -45,7 +44,10 @@ public class MainManager : MonoBehaviour
 
         lives = GameManager.Instance.Lives;
 
-        paddleParent = Ball.transform.parent;
+        ball = Instantiate(ballPrefab);
+        ball.transform.position = paddle.transform.position;
+        paddleParent = ball.transform.parent;
+        rbBall = ball.GetComponent<Rigidbody>();
     }
 
     
@@ -81,9 +83,9 @@ public class MainManager : MonoBehaviour
                 forceDir.Normalize();
 
 
-                Ball.transform.SetParent(null);
+                ball.transform.SetParent(null);
                 
-                Ball.AddForce(forceDir * ballSpeed * speedFactor, ForceMode.VelocityChange);
+                rbBall.AddForce(forceDir * ballSpeed * speedFactor, ForceMode.VelocityChange);
             }
         }
         else if (m_GameOver)
@@ -119,13 +121,13 @@ public class MainManager : MonoBehaviour
         else
         {
             // Reset ball over paddle
-            Ball.linearVelocity = Vector3.zero;
+            rbBall.linearVelocity = Vector3.zero;
             //Ball.angularVelocity = Vector3.zero;
-            Ball.Sleep();
-            Ball.GetComponent<Ball>().velocity = Vector3.zero;
+            rbBall.Sleep();
+            ball.GetComponent<Ball>().velocity = Vector3.zero;
             m_Started = false;
-            Ball.transform.position = paddleParent.position;
-            Ball.transform.SetParent(paddleParent);   
+            ball.transform.position = paddleParent.position;
+            ball.transform.SetParent(paddleParent);   
         }
     }
 
