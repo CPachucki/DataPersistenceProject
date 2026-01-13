@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,7 +9,10 @@ public class MainManager : MonoBehaviour
 {
     public Brick BrickPrefab;
     public int LineCount = 6;
-    public Rigidbody Ball;    
+    //public GameObject Ball; 
+    public Rigidbody Ball;
+    public Transform paddle;   
+    private Transform paddleParent;  
 
     public Text ScoreText;
     public Text HighScoreText; 
@@ -19,6 +20,7 @@ public class MainManager : MonoBehaviour
     
     private float ballSpeed = 2.0f;
     private float speedFactor = 1.0f;
+    private int lives = 1;
 
     private bool m_Started = false;
     private int m_Points;
@@ -30,14 +32,20 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
+        //rbBall = Ball.GetComponent<Rigidbody>();
+
         username = GameManager.Instance.Username;
-        ScoreText.text = $"{username}'s Score : {m_Points}";
+        UpdateScoreText();
 
         highScoreUsername = GameManager.Instance.HighScoreUsername;
         highScore = GameManager.Instance.HighScore;
         HighScoreText.text = $"High Score: {highScore}, {highScoreUsername}";
 
         speedFactor = GameManager.Instance.BallSpeed;
+
+        lives = GameManager.Instance.Lives;
+
+        paddleParent = Ball.transform.parent;
     }
 
     
@@ -64,6 +72,7 @@ public class MainManager : MonoBehaviour
     {
         if (!m_Started)
         {
+            // Start game
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 m_Started = true;
@@ -71,17 +80,22 @@ public class MainManager : MonoBehaviour
                 Vector3 forceDir = new Vector3(randomDirection, 1, 0);
                 forceDir.Normalize();
 
+
                 Ball.transform.SetParent(null);
+                
                 Ball.AddForce(forceDir * ballSpeed * speedFactor, ForceMode.VelocityChange);
             }
         }
         else if (m_GameOver)
         {
+            // Restart game
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 GameManager.Instance.LoadGameData();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-            } else if (Input.GetKeyDown(KeyCode.Escape))
+            } 
+            // Return to title
+            else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 SceneManager.LoadScene(0);
             }
@@ -91,7 +105,33 @@ public class MainManager : MonoBehaviour
     void AddPoint(int point)
     {
         m_Points += point;
-        ScoreText.text = $"{username}'s Score : {m_Points}";
+        UpdateScoreText();
+    }
+
+    public void SubtractLife()
+    {
+        lives--;
+        UpdateScoreText();
+        if (lives <= 0)
+        {
+            GameOver();
+        } 
+        else
+        {
+            // Reset ball over paddle
+            Ball.linearVelocity = Vector3.zero;
+            //Ball.angularVelocity = Vector3.zero;
+            Ball.Sleep();
+            Ball.GetComponent<Ball>().velocity = Vector3.zero;
+            m_Started = false;
+            Ball.transform.position = paddleParent.position;
+            Ball.transform.SetParent(paddleParent);   
+        }
+    }
+
+    public void UpdateScoreText()
+    {
+        ScoreText.text = $"{username}'s Score: {m_Points}, Lives: {lives}";
     }
 
     public void GameOver()
@@ -104,5 +144,10 @@ public class MainManager : MonoBehaviour
         {
             GameManager.Instance.UpdateHighScore(m_Points);
         }
+    }
+
+    public bool ReturnGameOver()
+    {
+        return m_GameOver;
     }
 }

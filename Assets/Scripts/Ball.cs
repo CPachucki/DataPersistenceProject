@@ -6,6 +6,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     private Rigidbody m_Rigidbody;
+    public UnityEngine.Vector3 velocity;
 
     void Start()
     {
@@ -14,7 +15,7 @@ public class Ball : MonoBehaviour
     
     private void OnCollisionExit(Collision other)
     {
-        var velocity = m_Rigidbody.linearVelocity;
+        /*var*/ velocity = m_Rigidbody.linearVelocity;
         
         //after a collision we accelerate a bit
         velocity += velocity.normalized * 0.01f;
@@ -26,9 +27,9 @@ public class Ball : MonoBehaviour
         }
 
         //max velocity
-        if (velocity.magnitude > 3.0f)
+        if (velocity.magnitude > 6.0f)
         {
-            velocity = velocity.normalized * 3.0f;
+            velocity = velocity.normalized * 6.0f;
         }
 
         m_Rigidbody.linearVelocity = velocity;
