@@ -1,5 +1,6 @@
 using UnityEngine;
 using System;
+
 using System.IO;
 using System.Diagnostics;
 
@@ -8,6 +9,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     public String Username;
+
     public int HighScore = 0;
     public String HighScoreUsername;
     public float BallSpeed = 1;

@@ -402,7 +402,6 @@ MonoBehaviour:
   ballPrefab: {fileID: 8138472493462194462, guid: fc60c9232e4322048b799f27e502f771, type: 3}
   paddle: {fileID: 97436041}
   ScoreText: {fileID: 188020406}
-  HighScoreText: {fileID: 2078529056}
   GameOverText: {fileID: 474497238}
 --- !u!1 &455529321
 GameObject:
@@ -1344,7 +1343,7 @@ GameObject:
   - component: {fileID: 2078529057}
   - component: {fileID: 2078529056}
   m_Layer: 5
-  m_Name: HighScoreText
+  m_Name: ScoreText (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

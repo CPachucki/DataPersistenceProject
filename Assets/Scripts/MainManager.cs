@@ -16,7 +16,7 @@ public class MainManager : MonoBehaviour
     private Transform paddleParent;  
 
     public Text ScoreText;
-    public Text HighScoreText; 
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private float ballSpeed = 2.0f;
@@ -48,6 +48,7 @@ public class MainManager : MonoBehaviour
         ball.transform.position = paddle.transform.position;
         paddleParent = ball.transform.parent;
         rbBall = ball.GetComponent<Rigidbody>();
+
     }
 
     
@@ -93,6 +94,7 @@ public class MainManager : MonoBehaviour
             // Restart game
             if (Input.GetKeyDown(KeyCode.Space))
             {
+
                 GameManager.Instance.LoadGameData();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             } 
@@ -146,6 +148,7 @@ public class MainManager : MonoBehaviour
         {
             GameManager.Instance.UpdateHighScore(m_Points);
         }
+
     }
 
     public bool ReturnGameOver()

@@ -27,17 +27,16 @@ public class StartMenu : MonoBehaviour
         if (usernameEntry.text != null)
         {
             GameManager.Instance.Username = usernameEntry.text;
-            UnityEngine.Debug.Log(GameManager.Instance.Username);
-            
             // Load game scene
             SceneManager.LoadScene(1);
         }
         else
         {
             UnityEngine.Debug.Log("Enter a username");
-        }          
-    }
+        }  
 
+        
+    }
     public void AccessSettings()
     {
         SceneManager.LoadScene(2);
