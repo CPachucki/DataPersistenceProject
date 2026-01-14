@@ -13,25 +13,17 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
-    public Text HighScoreText; 
     public GameObject GameOverText;
     
     private bool m_Started = false;
     private int m_Points;
-    private int highScore;
     private String username;
-    private String highScoreUsername;
     
     private bool m_GameOver = false;
 
     void Awake()
     {
         username = GameManager.Instance.Username;
-        ScoreText.text = $"{username}'s Score : {m_Points}";
-
-        highScoreUsername = GameManager.Instance.HighScoreUsername;
-        highScore = GameManager.Instance.HighScore;
-        HighScoreText.text = $"High Score: {highScore}, {highScoreUsername}";
     }
 
     
@@ -73,7 +65,6 @@ public class MainManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                GameManager.Instance.LoadHighScore();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
             }
         }
@@ -90,11 +81,5 @@ public class MainManager : MonoBehaviour
     {
         m_GameOver = true;
         GameOverText.SetActive(true);
-
-        // Call SaveHighScore method from GameManager singleton
-        if (m_Points > highScore)
-        {
-            GameManager.Instance.SaveHighScore(m_Points);
-        }
     }
 }
